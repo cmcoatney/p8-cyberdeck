@@ -4,6 +4,8 @@ CTX_TITLE=0
 CTX_GAMEPLAY=1
 CTX_GAMEOVER=2
 CTX_SCORECARD=3
+CTX_OPTIONS=4
+
 function _init()
  ctx=CTX_TITLE
 end
@@ -17,9 +19,10 @@ function _draw()
  
  --draw context
  if(ctx==CTX_TITLE) title()
- if(ctx==CTX_GAMEPLAY) map()
+ if(ctx==CTX_GAMEPLAY) playgame()
  if(ctx==CTX_GAMEOVER) gameover()
  if(ctx==CTX_SCORECARD) scorecard()
+ if(ctx==CTX_OPTIONS) options()
 end
 
 tick=30
@@ -31,12 +34,23 @@ function timer()
  end
 end
 
+--Drawing Contexts
 function title()
  cls(10)
 end
+
 function gameover()
  cls(8)
 end
+
 function scorecard()
  cls(7)
+end
+
+function playgame()
+ map()
+end
+
+function options()
+ cls(12)
 end
