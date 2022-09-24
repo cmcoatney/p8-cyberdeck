@@ -18,7 +18,7 @@ function _draw()
  cls()
  
  --draw context
- if(ctx==CTX_TITLE) title()
+ if(ctx==CTX_TITLE) title() init_easing()
  if(ctx==CTX_GAMEPLAY) playgame()
  if(ctx==CTX_GAMEOVER) gameover()
  if(ctx==CTX_SCORECARD) scorecard()
