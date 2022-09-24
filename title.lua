@@ -6,12 +6,11 @@ function title()
  draw_upper_panel()
  draw_lower_panel()
 
- local call_to_action="press ❎"
- local subtitle="hackerz\nprofile"
  local eez=0
  if (ezt<=ezd) eez=easing(ezt,ezby,ezcy,ezd,11)
+
+ local call_to_action="press ❎"
  print(call_to_action,hcenter(call_to_action),72+eez,12)
- print(subtitle,35,104,0)
 end
 
 function draw_upper_panel()
@@ -64,6 +63,9 @@ function draw_lower_panel()
  pal(8,0)
  spr(49,70,96+title_y)
  pal()
+ 
+ local subtitle="hackerz\nprofile"
+ print(subtitle,35,104+title_y,0)
 
  draw_hazard_stripe()
  draw_zero_one()
