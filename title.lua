@@ -63,15 +63,15 @@ function draw_lower_panel()
  pal(8,0)
  spr(49,70,96+title_y)
  pal()
- 
+
  local subtitle="hackerz\nprofile"
  print(subtitle,35,104+title_y,0)
 
- draw_hazard_stripe()
+ draw_hazard_tape_pattern()
  draw_zero_one()
 end
 
-function draw_hazard_stripe()
+function draw_hazard_tape_pattern()
  local y_offset=98+title_y
  local x_offset=80
 
@@ -79,7 +79,7 @@ function draw_hazard_stripe()
   line(i,y_offset,8+i,y_offset+8,0)
   line(i,y_offset+1,8+i,y_offset+8+1,0)
  end
- --trim
+ --trim around stripes for cleaner look
  rectfill(80,106+title_y,127,108+title_y,10)
  rectfill(80,98+title_y,127,100+title_y,10)
  rectfill(81,98+title_y,85,108+title_y,10)
