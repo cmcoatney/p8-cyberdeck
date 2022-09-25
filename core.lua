@@ -8,10 +8,40 @@ CTX_OPTIONS=4
 
 function _init()
  ctx=CTX_TITLE
+ set_svgcenter()
+ refresh(0,0,0)
 end
 
 function _update60()
  timer()
+ local x,y,x=0,0,0
+
+ if camz < 2 and not stopsvg then 
+  z=.02 
+ else
+  reverse=true
+ end
+ if reverse and not stopsvg then
+  if camz>.8 then 
+   z=-.02 
+   else
+   camz=.82
+  end
+ end
+ 
+ if(camz < 0) stopsvg=true
+ 
+ ezt+=1
+ local st=6
+	if ezt<=ezd then
+		ty=easing(ezt,ezby,ezcy,ezd,st)
+	end
+ 
+ if(not stopsvg) refresh(x,y,z)
+ 
+ 
+ if(svgglitch==true) glitch()
+ current_track=title_track
 end
 
 function _draw()
