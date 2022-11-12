@@ -55,12 +55,13 @@ function _draw()
  if(ctx==CTX_OPTIONS) options()
 end
 
-tick=30
+tick=15
 function timer()
  tick-=1
  if tick < 0 then
-  --do something
-  tick=30
+  
+  blink= (not blink)
+  tick=15
  end
 end
 

@@ -2,6 +2,7 @@
 title_y=64 
 loading_cnt=0
 cam_offset=64
+blink=false
 function title()
  draw_upper_panel()
  draw_lower_panel()
@@ -10,7 +11,7 @@ function title()
  if (ezt<=ezd) eez=easing(ezt,ezby,ezcy,ezd,11)
 
  local call_to_action="press ❎"
- print(call_to_action,hcenter(call_to_action)-cam_offset,72+eez-cam_offset,12)
+ if(blink and eez==0) print(call_to_action,hcenter(call_to_action)-cam_offset,72+eez-cam_offset,12)
 end
 
 reverse=false
