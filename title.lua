@@ -3,6 +3,7 @@ title_y=64
 loading_cnt=0
 cam_offset=64
 blink=false
+title_loaded=false
 function title()
  draw_upper_panel()
  draw_lower_panel()
@@ -11,7 +12,7 @@ function title()
  if (ezt<=ezd) eez=easing(ezt,ezby,ezcy,ezd,11)
 
  local call_to_action="press ❎"
- if(blink and eez==0) print(call_to_action,hcenter(call_to_action)-cam_offset,72+eez-cam_offset,12)
+ if(blink and eez==0) print(call_to_action,hcenter(call_to_action)-cam_offset,72+eez-cam_offset,12) title_loaded=true
 end
 
 reverse=false
@@ -41,6 +42,12 @@ function draw_upper_panel()
  --blackout
  rectfill(23-cam_offset,7-title_y-cam_offset,106-cam_offset,17-title_y-cam_offset,0)
  rectfill(27-cam_offset,18-title_y-cam_offset,102-cam_offset,21-title_y-cam_offset,0)
+
+ if(title_loaded) draw_volume_meter()
+--blackout bottom of leftmost volume bar hangdown
+line(0-cam_offset,25-cam_offset,29-cam_offset,25-cam_offset,0)
+line(0-cam_offset,24-cam_offset,29-cam_offset,24-cam_offset,0)
+    
 
 --diagonal overlays
  line(23-cam_offset,13-title_y-cam_offset,29-cam_offset,0-title_y-cam_offset,10)
@@ -112,6 +119,64 @@ function draw_zero_one()
  rectfill(4-cam_offset,116+title_y-cam_offset,12-cam_offset,118+title_y-cam_offset,0)
  rectfill(16-cam_offset,116+title_y-cam_offset,22-cam_offset,118+title_y-cam_offset,0)
  rectfill(16-cam_offset,100+title_y-cam_offset,20-cam_offset,102+title_y-cam_offset,0)
+end
+
+function draw_volume_bar(x,y,height) 
+    --draw blue volume bar
+    line(x-cam_offset,y-cam_offset,x-cam_offset,y-cam_offset-height,12)
+end
+
+volumes={}
+function get_volumes()
+ volumes[1]=rnd(18)
+ volumes[1]=rnd(18)
+ volumes[1]=rnd(18)
+ volumes[2]=rnd(18)
+ volumes[3]=rnd(18)
+ volumes[4]=rnd(18)
+ volumes[5]=rnd(18)
+ volumes[6]=rnd(18)
+ volumes[7]=rnd(18)
+ volumes[8]=rnd(18)
+ volumes[9]=rnd(18)
+ volumes[10]=rnd(18)
+ volumes[11]=rnd(18)
+ volumes[12]=rnd(18)
+ volumes[13]=rnd(18)
+ volumes[14]=rnd(18)
+ volumes[15]=rnd(18)
+ volumes[16]=rnd(18)
+ volumes[17]=rnd(18)
+ volumes[18]=rnd(18)
+ volumes[19]=rnd(18)
+ volumes[20]=rnd(18)
+ volumes[21]=rnd(18)
+ volumes[22]=rnd(18)
+ volumes[23]=rnd(18)
+ volumes[24]=rnd(18)
+ volumes[25]=rnd(18)
+ volumes[26]=rnd(18)
+ volumes[27]=rnd(18)
+ volumes[28]=rnd(18)
+ volumes[29]=rnd(18)
+ volumes[30]=rnd(18)
+ volumes[31]=rnd(18)
+ volumes[32]=rnd(18)
+ volumes[33]=rnd(18)
+ volumes[34]=rnd(18)
+ volumes[35]=rnd(18)
+ volumes[36]=rnd(18)
+end
+
+function draw_volume_meter()
+   local num=1
+   get_volumes()
+
+   for i=29, 99, 2 do
+    --draw_volume_bar(i,25,18)
+    draw_volume_bar(i,25,volumes[num])
+    num+=1
+   end
 end
 
 
