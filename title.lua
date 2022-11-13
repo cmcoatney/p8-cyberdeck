@@ -12,7 +12,7 @@ function title()
  if (ezt<=ezd) eez=easing(ezt,ezby,ezcy,ezd,11)
 
  local call_to_action="press ❎"
- if(blink and eez==0) print(call_to_action,hcenter(call_to_action)-cam_offset,72+eez-cam_offset,12) title_loaded=true
+ if(blink and eez==0) print(call_to_action,hcenter(call_to_action)-cam_offset,72+eez-cam_offset,12) title_loaded=true 
 end
 
 reverse=false

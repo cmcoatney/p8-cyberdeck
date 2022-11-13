@@ -10,6 +10,9 @@ function _init()
  ctx=CTX_TITLE
  set_svgcenter()
  refresh(0,0,0)
+
+  --play theme music
+  music(0)
 end
 
 function _update60()
