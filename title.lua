@@ -128,44 +128,20 @@ end
 
 volumes={}
 function get_volumes()
- volumes[1]=rnd(18)
- volumes[1]=rnd(18)
- volumes[1]=rnd(18)
- volumes[2]=rnd(18)
- volumes[3]=rnd(18)
- volumes[4]=rnd(18)
- volumes[5]=rnd(18)
- volumes[6]=rnd(18)
- volumes[7]=rnd(18)
- volumes[8]=rnd(18)
- volumes[9]=rnd(18)
- volumes[10]=rnd(18)
- volumes[11]=rnd(18)
- volumes[12]=rnd(18)
- volumes[13]=rnd(18)
- volumes[14]=rnd(18)
- volumes[15]=rnd(18)
- volumes[16]=rnd(18)
- volumes[17]=rnd(18)
- volumes[18]=rnd(18)
- volumes[19]=rnd(18)
- volumes[20]=rnd(18)
- volumes[21]=rnd(18)
- volumes[22]=rnd(18)
- volumes[23]=rnd(18)
- volumes[24]=rnd(18)
- volumes[25]=rnd(18)
- volumes[26]=rnd(18)
- volumes[27]=rnd(18)
- volumes[28]=rnd(18)
- volumes[29]=rnd(18)
- volumes[30]=rnd(18)
- volumes[31]=rnd(18)
- volumes[32]=rnd(18)
- volumes[33]=rnd(18)
- volumes[34]=rnd(18)
- volumes[35]=rnd(18)
- volumes[36]=rnd(18)
+    for v=1, 36 do
+        local spike=spike(v) + rnd(4)
+        if(spike < 0 or music_events.volume[1]==0) spike = 0
+        if(spike >18) spike = 16
+        volumes[v]= spike
+    end
+end
+
+function spike(n)
+   if(n%6==0) return music_events.volume[1]
+   if(n%5==0) return music_events.pitch[1]+1
+   if(n%4==0) return music_events.notevol[1] * rnd(8)
+   if(n%3==0) return (music_events.effect[1]) * rnd(6)
+   return (music_events.wave[1]+8)
 end
 
 function draw_volume_meter()

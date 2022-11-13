@@ -11,12 +11,25 @@ function _init()
  set_svgcenter()
  refresh(0,0,0)
 
+ --start visualizer
+ start(0)
+ file={
+  data=ls() or {}, index=1,
+  music_id=00, menu=false
+}
+
+arg=split(stat(6))
+
   --play theme music
   music(0)
 end
 
 function _update60()
  timer()
+ 
+ update_visualizer()
+
+
  local x,y,x=0,0,0
 
  if camz < 2 and not stopsvg then 
@@ -49,6 +62,7 @@ end
 
 function _draw()
  cls()
+ --draw_visualizer()
 
  --draw context
  if(ctx==CTX_TITLE) title() init_easing()
@@ -57,7 +71,7 @@ function _draw()
  if(ctx==CTX_SCORECARD) scorecard()
  if(ctx==CTX_OPTIONS) options()
 
-
+ 
 end
 
 tick=15
@@ -97,4 +111,11 @@ function hcenter(s)
   -- pixels in a char's width,
   -- cut in half
   return 64-#s*2
+end
+
+function beep(f,v,l)
+	for i=1,l do
+		poke(-1,128+cos(i*f)*v)
+		serial(0x808,-1,1)
+	end
 end
