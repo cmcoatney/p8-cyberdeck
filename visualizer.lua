@@ -19,43 +19,6 @@ function update_visualizer()
 	end
 end
 
-function draw_visualizer()
-	--rectfill(0,117,127,127,1)
-	
-	local bar=music_events.volume
-	
-	for i=1,4 do
-		camera(i*-32)
-		
-		if @(0x30ff+stat(54)*4+i)&64>0 then
-			--rect(-32,0,-1,20,5)
-			--line(-31,1,-2,19,8)
-			--line(-31,19,-2,1)
-		else
-			--rect(-32,0,-1,20,6)
-			?music_events:getpattern(i),-30,2,8
-			?music_events:getrow(i),-13,2
-		end
-		
-		?music_events:getnote(i),-28,8,11
-		?music_events:getfx(i),-30,14,12
-		
-		fillp(0b0101111101011111)
-		if music_events.sfxinstr[i] then
-			rectfill(-32,118-12.8*bar[i],-2,118,5)
-			?music_events:getsfxinstr(i),-26,114,music_events.wave[i]+8
-		else
-			rectfill(-32,118-12.8*bar[i],-2,118,music_events.wave[i]+8)
-		end
-		fillp()
-		
-		music_events:drawfilt(i)
-	end
-	
-	camera()
-	--drawmusframes(-22,stat(54))
-end
-
 
 -- music events
 
