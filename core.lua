@@ -8,6 +8,8 @@ CTX_OPTIONS=4
 
 function _init()
  ctx=CTX_TITLE
+
+ --title svg
  set_svgcenter()
  refresh(0,0,0)
 
@@ -26,10 +28,12 @@ end
 
 function _update60()
  timer()
- 
+
+ --title volume visualizer
  update_visualizer()
 
-
+ --animate svg title
+ anim()
  local x,y,x=0,0,0
 
  if camz < 2 and not stopsvg then 
@@ -55,37 +59,28 @@ function _update60()
  
  if(not stopsvg) refresh(x,y,z)
  
- 
- if(svgglitch==true) glitch()
  current_track=title_track
 end
 
 function _draw()
- cls()
- --draw_visualizer()
-
  --draw context
  if(ctx==CTX_TITLE) title() init_easing()
  if(ctx==CTX_GAMEPLAY) playgame()
  if(ctx==CTX_GAMEOVER) gameover()
  if(ctx==CTX_SCORECARD) scorecard()
  if(ctx==CTX_OPTIONS) options()
-
- 
 end
 
 tick=15
 function timer()
  tick-=1
  if tick < 0 then
-  
   blink= (not blink)
   tick=15
  end
 end
 
 --Drawing Contexts
- 
 
 function gameover()
  cls(8)

@@ -1,6 +1,8 @@
 pico-8 cartridge // http://www.pico-8.com
 version 38
 __lua__
+--by p8-head (c) 2022
+
 --imports
 
 #include cyberdeck/core.lua

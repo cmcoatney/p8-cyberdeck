@@ -1,4 +1,19 @@
 --title screen
+
+
+
+svgcol=7
+animate=5
+loading=0
+function anim()
+ animate-=1
+ if animate<0 then
+  loading+=1
+  if(loading>3) loading=0
+  animate=5
+ end
+end
+
 title_y=64 
 loading_cnt=0
 cam_offset=64
@@ -12,7 +27,7 @@ function title()
  if (ezt<=ezd) eez=easing(ezt,ezby,ezcy,ezd,11)
 
  local call_to_action="press ❎"
- if(blink and eez==0) print(call_to_action,hcenter(call_to_action)-cam_offset,72+eez-cam_offset,12) title_loaded=true 
+ if(blink and eez==0) print(call_to_action,hcenter(call_to_action)-cam_offset,80+eez-cam_offset,12) title_loaded=true 
 end
 
 reverse=false
