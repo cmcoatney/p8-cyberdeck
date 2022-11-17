@@ -32,20 +32,24 @@ pico-8 carts folder (this folder and a symlink is better than 20 files per proje
 This cart makes use of several libraries.
 
 
-## draw svg 1.1 by txori
-
+## path-to-bezier and draw svg 1.1 by txori
+--https://itchylabs.com/tools/path-to-bezier/
 --svg converted with https://www.txori.com/index.php?static14/pico8
 
+## Drawing
 
 Creating SVG Data with Inkscape:
 -- 1. press b on keyboard 
 -- 2. choose spiro tool
 -- 3. create a shape
 -- 4. open in text editor
--- 5. select path string value
+-- 5. select path string value 
 -- 6. in other words,
--- 7. what's between the quotes
+-- 7. what's between the quotes of path="m..."
 -- 8. use the txori tool above
+(If the resulting object does not work in the txori demo, 
+use the itchylabs converter to translate the path first then use txori. 
+Make sure when running in txori that it begins with m and ends with z)
 -- 9. replace the svg table below
 -- 10. run cart
 -- 11. first number is color
