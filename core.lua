@@ -91,7 +91,9 @@ function scorecard()
 end
 
 function playgame()
- map()
+ cls(0)
+ --map()
+ print('yuh bruh',20,20,8)
 end
 
 function options()
