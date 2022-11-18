@@ -72,22 +72,40 @@ function _draw()
 end
 
 tick=15
+over=300 --used as gameover countdown
 function timer()
  tick-=1
+ over-=1
  if tick < 0 then
   blink= (not blink)
   tick=15
+ end
+
+ --test gameover using timer untile 
+ --loss condition complete then
+ --remove this code 
+ if over == 1 then
+  ctx=CTX_GAMEOVER
+  current_track=title_track
+  music(0)
+  start()
  end
 end
 
 --Drawing Contexts
 
 function gameover()
- cls(8)
+  local countdown = {10,9,8,7,6,5,4,3,2,1}
+  cls(0)
+  local done = flr(abs(over)/100)
+  if(done==0) done = 1
+  if(countdown[done]==nil) ctx=CTX_SCORECARD
+  print("continue?",0,0,12)
+  print(countdown[done],0,20,8)
 end
 
 function scorecard()
- cls(7)
+ cls(3)
 end
 
 function playgame()
