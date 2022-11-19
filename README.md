@@ -57,3 +57,8 @@ Make sure when running in txori that it begins with m and ends with z)
 
 thanks http://www.f-legrand.fr/scidoc/docmml/graphie/geometrie/bezier/bezier.html
 
+ cartdata("p8-head_3720to1_1")
+ function savegame()
+ --highscore
+ if(dget(0)<falcon.points) dset(0,falcon.points)
+end

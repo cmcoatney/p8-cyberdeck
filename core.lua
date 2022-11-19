@@ -28,9 +28,10 @@ end
 
 function _update60()
  timer()
+ if(ctx==CTX_GAMEOVER) check_continue()
 
  --title volume visualizer
- update_visualizer()
+ if(ctx==CTX_TITLE) update_visualizer()
 
  --animate svg title
  anim()
@@ -72,28 +73,52 @@ function _draw()
 end
 
 tick=15
+over=300 --used as gameover countdown
 function timer()
  tick-=1
+ over-=1
  if tick < 0 then
   blink= (not blink)
   tick=15
+ end
+
+ --test gameover using timer untile 
+ --loss condition complete then
+ --remove this code 
+ if over == 1 then
+  svg=svg_gameover
+  ctx=CTX_GAMEOVER
+  stopsvg=false
+  set_svgcenter()
+  refresh(0,0,0)
+  current_track=title_track
+  music(0)
+  start()
  end
 end
 
 --Drawing Contexts
 
 function gameover()
- cls(8)
+  local countdown = {10,9,8,7,6,5,4,3,2,1}
+  init_easing()
+  local done = flr(abs(over)/100)
+  if(done==0) done = 1
+  if(countdown[done]==nil) end_countdown() return
+  print("continue?",-30,6,12)
+  print(countdown[done],20,6,8)
+  if(blink) print(call_to_action,hcenter(call_to_action)-64,20,12) 
 end
 
 function scorecard()
- cls(7)
+ cls(0)
+ print('highscores',hcenter('highscores'),10,8)
 end
 
 function playgame()
  cls(0)
  --map()
- print('yuh bruh',20,20,8)
+ print('GAME ON',-30,6,12)
 end
 
 function options()

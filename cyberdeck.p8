@@ -29,6 +29,7 @@ loading_cnt=0
 cam_offset=64
 blink=false
 title_loaded=false
+call_to_action="press ❎"
 function title()
  draw_upper_panel()
  draw_lower_panel()
@@ -36,7 +37,6 @@ function title()
  local eez=0
  if (ezt<=ezd) eez=easing(ezt,ezby,ezcy,ezd,11)
 
- local call_to_action="press ❎"
  if(blink and eez==0) print(call_to_action,hcenter(call_to_action)-cam_offset,80+eez-cam_offset,12) title_loaded=true 
 end
 
@@ -182,7 +182,7 @@ end
 
 --svg
 
-svg={
+svg_title={
     {7,76,43,76,43,74,41,74,41,74,41,60,51,60,51,60,51,73,52,73,52,73,52,73,50,73,50},
     {7,78,45,78,45,80,50,80,50,80,50,82,51,82,51,82,51,88,46,88,46,88,46,90,46,90,46,90,46,72,70,72,70},
     {7,105,30,105,30,90,50,90,50,90,50,91,51,91,51,91,51,105,44,105,44,105,44,105,42,105,42,105,42,99,42,99,42},
@@ -196,7 +196,7 @@ svg={
     {7,180,36,180,36,168,62,168,62},
     {7,188,39,188,39,179,44,179,44,179,44,178,46,178,46,178,46,195,56,195,56},
     }
-    
+svg=svg_title    
 --level of details
 lod=.01 --8 default
 
@@ -336,7 +336,7 @@ function update_visualizer()
 	 ctx=ctx_gameplay
 	 stopsvg=true
 	 music(-1,500)
-	 cls(8)
+	 cls(14)
 	end
 end
 
@@ -482,6 +482,62 @@ function drawmusframes(cy,f)
 	end
 	
 	camera()
+end
+
+
+-->8
+--gameover
+
+svg_gameover={
+{7,175,63,175,63,165,63,165,63,165,63,161,70,161,70,161,70,162,72,162,72,162,72,171,71,171,71},
+{7,139,62,139,62,142,73,142,73},
+{7,134,68,134,68,139,68,139,68},
+{7,144,58,144,58,138,60,138,60,138,60,129,72,129,72},
+{7,133,57,133,57,127,72,127,72,127,72,112,73,112,73},
+{7,130,60,130,60,127,59,127,59,127,59,121,60,121,60,121,60,118,65,118,65,118,65,120,67,120,67,120,67,126,67,126,67},
+{7,143,71,143,71,148,62,148,62,148,62,151,69,151,69,151,69,156,62,156,62,156,62,160,72,160,72},
+{7,166,66,166,66,173,66,173,66},
+{7,219,82,219,82,227,63,227,63,227,63,237,63,237,63,237,63,238,65,238,65,238,65,227,69,227,69,227,69,226,71,226,71,226,71,237,77,237,77},
+{7,200,60,200,60,206,73,206,73,206,73,211,64,211,64},
+{7,196,70,196,70,194,72,194,72,194,72,190,72,190,72,190,72,188,71,188,71,188,71,190,64,190,64,190,64,198,61,198,61,198,61,200,63,200,63,200,63,197,68,197,68},
+{7,225,63,225,63,215,63,215,63,215,63,210,70,210,70,210,70,212,72,212,72,212,72,220,71,220,71},
+{7,215,66,215,66,222,66,222,66},
+}
+
+--resets game for replay
+--not title screen
+function reset_game()
+ ctx=ctx_gameplay
+ stopsvg=true
+ over=300
+ tick=15
+ blink=false
+ svg=svg_title
+ current_track=title_track
+end
+
+function end_countdown()
+ ctx=ctx_scorecard
+ music(-1,500) 
+ svg=svg_title
+ stopsvg=true
+ print("end",20,20,8)
+ camera()
+ scorecard()
+end
+
+function check_continue()
+ if btnp()&63>0 then
+  do_continue()
+	end 
+end
+
+function do_continue()
+	_init()
+ ctx=ctx_gameplay
+	stopsvg=true
+	music(-1,500)
+	cls(flr(rnd(15)))
 end
 
 
