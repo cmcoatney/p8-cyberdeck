@@ -28,9 +28,10 @@ end
 
 function _update60()
  timer()
+ if(ctx==CTX_GAMEOVER) check_continue()
 
  --title volume visualizer
- update_visualizer()
+ if(ctx==CTX_TITLE) update_visualizer()
 
  --animate svg title
  anim()
@@ -103,19 +104,21 @@ function gameover()
   init_easing()
   local done = flr(abs(over)/100)
   if(done==0) done = 1
-  if(countdown[done]==nil) ctx=CTX_SCORECARD
+  if(countdown[done]==nil) end_countdown() return
   print("continue?",-30,6,12)
   print(countdown[done],20,6,8)
+  if(blink) print(call_to_action,hcenter(call_to_action)-64,20,12) 
 end
 
 function scorecard()
- cls(3)
+ cls(0)
+ print('highscores',hcenter('highscores'),10,8)
 end
 
 function playgame()
  cls(0)
  --map()
- print('yuh bruh',20,20,8)
+ print('GAME ON',-30,6,12)
 end
 
 function options()

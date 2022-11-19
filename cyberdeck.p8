@@ -29,6 +29,7 @@ loading_cnt=0
 cam_offset=64
 blink=false
 title_loaded=false
+call_to_action="press ❎"
 function title()
  draw_upper_panel()
  draw_lower_panel()
@@ -36,7 +37,6 @@ function title()
  local eez=0
  if (ezt<=ezd) eez=easing(ezt,ezby,ezcy,ezd,11)
 
- local call_to_action="press ❎"
  if(blink and eez==0) print(call_to_action,hcenter(call_to_action)-cam_offset,80+eez-cam_offset,12) title_loaded=true 
 end
 
@@ -182,7 +182,7 @@ end
 
 --svg
 
-svg={
+svg_title={
     {7,76,43,76,43,74,41,74,41,74,41,60,51,60,51,60,51,73,52,73,52,73,52,73,50,73,50},
     {7,78,45,78,45,80,50,80,50,80,50,82,51,82,51,82,51,88,46,88,46,88,46,90,46,90,46,90,46,72,70,72,70},
     {7,105,30,105,30,90,50,90,50,90,50,91,51,91,51,91,51,105,44,105,44,105,44,105,42,105,42,105,42,99,42,99,42},
@@ -196,7 +196,7 @@ svg={
     {7,180,36,180,36,168,62,168,62},
     {7,188,39,188,39,179,44,179,44,179,44,178,46,178,46,178,46,195,56,195,56},
     }
-    
+svg=svg_title    
 --level of details
 lod=.01 --8 default
 
@@ -336,7 +336,7 @@ function update_visualizer()
 	 ctx=ctx_gameplay
 	 stopsvg=true
 	 music(-1,500)
-	 cls(8)
+	 cls(14)
 	end
 end
 
@@ -503,6 +503,44 @@ svg_gameover={
 {7,225,63,225,63,215,63,215,63,215,63,210,70,210,70,210,70,212,72,212,72,212,72,220,71,220,71},
 {7,215,66,215,66,222,66,222,66},
 }
+
+--resets game for replay
+--not title screen
+function reset_game()
+ ctx=ctx_gameplay
+ stopsvg=true
+ over=300
+ tick=15
+ blink=false
+ svg=svg_title
+ current_track=title_track
+end
+
+function end_countdown()
+ ctx=ctx_scorecard
+ music(-1,500) 
+ svg=svg_title
+ stopsvg=true
+ print("end",20,20,8)
+ camera()
+ scorecard()
+end
+
+function check_continue()
+ if btnp()&63>0 then
+  do_continue()
+	end 
+end
+
+function do_continue()
+	_init()
+ ctx=ctx_gameplay
+	stopsvg=true
+	music(-1,500)
+	cls(flr(rnd(15)))
+end
+
+
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
