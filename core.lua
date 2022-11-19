@@ -85,7 +85,11 @@ function timer()
  --loss condition complete then
  --remove this code 
  if over == 1 then
+  svg=svg_gameover
   ctx=CTX_GAMEOVER
+  stopsvg=false
+  set_svgcenter()
+  refresh(0,0,0)
   current_track=title_track
   music(0)
   start()
@@ -96,12 +100,12 @@ end
 
 function gameover()
   local countdown = {10,9,8,7,6,5,4,3,2,1}
-  cls(0)
+  init_easing()
   local done = flr(abs(over)/100)
   if(done==0) done = 1
   if(countdown[done]==nil) ctx=CTX_SCORECARD
-  print("continue?",0,0,12)
-  print(countdown[done],0,20,8)
+  print("continue?",-30,6,12)
+  print(countdown[done],20,6,8)
 end
 
 function scorecard()
