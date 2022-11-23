@@ -6,8 +6,13 @@ CTX_GAMEOVER=2
 CTX_SCORECARD=3
 CTX_OPTIONS=4
 
+player={}
 function _init()
- ctx=CTX_TITLE
+  player.points=0
+  cartdata("p8-head_cyberdeck_1")
+  --load_scores()
+
+  ctx=CTX_SCORECARD
 
  --title svg
  set_svgcenter()
@@ -24,6 +29,11 @@ arg=split(stat(6))
 
   --play theme music
   music(0)
+end
+
+function savegame()
+--highscore
+if(dget(0)<player.points) dset(0,player.points)
 end
 
 function _update60()
@@ -82,12 +92,13 @@ function timer()
   tick=15
  end
 
- --test gameover using timer untile 
+ --test gameover using timer untill 
  --loss condition complete then
- --remove this code 
+ --remove this code (this only occurs once)
  if over == 1 then
+  --topten(scores)
   svg=svg_gameover
-  ctx=CTX_GAMEOVER
+  ctx=ctx_gameover
   stopsvg=false
   set_svgcenter()
   refresh(0,0,0)
@@ -95,6 +106,10 @@ function timer()
   music(0)
   start()
  end
+end
+
+function do_gameover()
+
 end
 
 --Drawing Contexts
@@ -110,9 +125,30 @@ function gameover()
   if(blink) print(call_to_action,hcenter(call_to_action)-64,20,12) 
 end
 
+high_score=500
+low_score=50
 function scorecard()
+ camera()
  cls(0)
- print('highscores',hcenter('highscores'),10,8)
+ print('highscores',hcenter('highscores'),4,8)
+ 
+ local x=50
+ local y = 14
+ for g in all(nicks) do
+  print(g,64-((#g)*4),y,7)
+  y+=10
+ end
+ 
+ x+=66
+ y=14
+ for i=1, #highscores do
+  local col=12
+  if(highscores[i]>=high_score) col=10
+  if(highscores[i]<=low_score) col=8
+  print(highscores[i],66,y,col)
+  y+=10
+ end
+ if(blink) print(call_to_action,hcenter(call_to_action),120,12)
 end
 
 function playgame()

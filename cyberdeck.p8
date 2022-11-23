@@ -3,11 +3,186 @@ version 38
 __lua__
 --by p8-head (c) 2022
 
---imports
+--#include cyberdeck/animations.lua
+--core
+ctx=0
+ctx_title=0
+ctx_gameplay=1
+ctx_gameover=2
+ctx_scorecard=3
+ctx_options=4
 
-#include cyberdeck/core.lua
-#include cyberdeck/animations.lua
+player={}
+function _init()
+  player.points=0
+  cartdata("p8-head_cyberdeck_1")
+  --load_scores()
 
+  ctx=ctx_scorecard
+
+ --title svg
+ set_svgcenter()
+ refresh(0,0,0)
+
+ --start visualizer
+ start(0)
+ file={
+  data=ls() or {}, index=1,
+  music_id=00, menu=false
+}
+
+arg=split(stat(6))
+
+  --play theme music
+  music(0)
+end
+
+function savegame()
+--highscore
+if(dget(0)<player.points) dset(0,player.points)
+end
+
+function _update60()
+ timer()
+ if(ctx==ctx_gameover) check_continue()
+
+ --title volume visualizer
+ if(ctx==ctx_title) update_visualizer()
+
+ --animate svg title
+ anim()
+ local x,y,x=0,0,0
+
+ if camz < 2 and not stopsvg then 
+  z=.02 
+ else
+  reverse=true
+ end
+ if reverse and not stopsvg then
+  if camz>.8 then 
+   z=-.02 
+   else
+   camz=.82
+  end
+ end
+ 
+ if(camz < 0) stopsvg=true
+ 
+ ezt+=1
+ local st=6
+	if ezt<=ezd then
+		ty=easing(ezt,ezby,ezcy,ezd,st)
+	end
+ 
+ if(not stopsvg) refresh(x,y,z)
+ 
+ current_track=title_track
+end
+
+function _draw()
+ --draw context
+ if(ctx==ctx_title) title() init_easing()
+ if(ctx==ctx_gameplay) playgame()
+ if(ctx==ctx_gameover) gameover()
+ if(ctx==ctx_scorecard) scorecard()
+ if(ctx==ctx_options) options()
+end
+
+tick=15
+over=300 --used as gameover countdown
+function timer()
+ tick-=1
+ over-=1
+ if tick < 0 then
+  blink= (not blink)
+  tick=15
+ end
+
+ --test gameover using timer untill 
+ --loss condition complete then
+ --remove this code (this only occurs once)
+ if over == 1 then
+  --topten(scores)
+  svg=svg_gameover
+  ctx=ctx_gameover
+  stopsvg=false
+  set_svgcenter()
+  refresh(0,0,0)
+  current_track=title_track
+  music(0)
+  start()
+ end
+end
+
+function do_gameover()
+
+end
+
+--drawing contexts
+
+function gameover()
+  local countdown = {10,9,8,7,6,5,4,3,2,1}
+  init_easing()
+  local done = flr(abs(over)/100)
+  if(done==0) done = 1
+  if(countdown[done]==nil) end_countdown() return
+  print("continue?",-30,6,12)
+  print(countdown[done],20,6,8)
+  if(blink) print(call_to_action,hcenter(call_to_action)-64,20,12) 
+end
+
+high_score=500
+low_score=50
+function scorecard()
+ camera()
+ cls(0)
+ print('highscores',hcenter('highscores'),4,8)
+ 
+ local x=50
+ local y = 14
+ for g in all(nicks) do
+  print(g,64-((#g)*4),y,7)
+  y+=10
+ end
+ 
+ x+=66
+ y=14
+ for i=1, #highscores do
+  local col=12
+  if(highscores[i]>=high_score) col=10
+  if(highscores[i]<=low_score) col=8
+  print(highscores[i],66,y,col)
+  y+=10
+ end
+ if(blink) print(call_to_action,hcenter(call_to_action),120,12)
+end
+
+function playgame()
+ cls(0)
+ --map()
+ print('game on',-30,6,12)
+end
+
+function options()
+ cls(12)
+end
+
+
+--utilities
+function hcenter(s)
+  -- screen center minus the
+  -- string length times the 
+  -- pixels in a char's width,
+  -- cut in half
+  return 64-#s*2
+end
+
+function beep(f,v,l)
+	for i=1,l do
+		poke(-1,128+cos(i*f)*v)
+		serial(0x808,-1,1)
+	end
+end
 
 -->8
 --title screen
@@ -541,6 +716,158 @@ function do_continue()
 end
 
 
+-->8
+--highscore
+
+scores={}
+function load_scores()
+ scores={354,1,865,234,12,098,223,456,876,1000,500}
+end
+
+gaps={}
+function shellsort(a)
+    for gap in all(gaps) do
+        for i=gap+1,#a do
+            local x=a[i]
+            local j=i-gap
+            while j>=1 and a[j]>x do
+                a[j+gap]=a[j]
+                j-=gap
+            end
+            a[j+gap]=x
+        end
+    end
+end
+
+highscores={}
+function topten(unsorted)
+ gaps=unsorted
+ --sort from low to high
+ --store in scores
+ shellsort(unsorted)
+ 
+ for i=#unsorted,1,-1 do
+  --sort top ten, highest first
+  if(i<11) add(highscores,unsorted[i])
+ end
+end
+-->8
+--animation
+
+-- ========================== 
+-- easing
+-- ========================== 
+
+ ezcy=-100
+ ezby=100
+ ezd=128--60 (snappier)
+ ezt=0
+function init_easing()
+ ezt+=1
+ local st=6
+	if ezt<=ezd then
+		title_y=easing(ezt,ezby,ezcy,ezd,st)
+	end
+end
+
+function easing(t,b,c,d,style)
+	if style==0 then	
+	 --linear easing
+	 return c * t / d + b
+ 
+ --======== quadratics =======
+ elseif style==1 then
+ 	--quad ease in
+ 	t/=d
+		return c*t*t + b
+	elseif style==2 then
+	 --quad ease out
+	 t/=d
+		return -c * t*(t-2) + b
+	elseif style==3 then
+		--quad easing in/out
+		t/=d/2
+ 	if (t < 1) return c/2*t*t + b
+ 	t-=1
+ 	return -c/2 * (t*(t-2) - 1) + b
+ 
+ --========== cubics =========
+	elseif style==4 then
+		--cubic ease in
+	 t/=d
+		return c*t*t*t + b
+	elseif style==5 then
+		--cubic ease out
+	 t/=d
+		t-=1
+		return c*(t*t*t + 1) + b
+	elseif style==6 then
+		--cubic ease in/out
+	 t/=d/2
+ 	if (t < 1) return c/2*t*t*t + b
+ 	t-=2
+ 	return c/2*(t*t*t + 2) + b
+	
+ --======== circular =========	
+	elseif style==7 then
+		--circular ease in
+	 t/=d
+		return -c * (sqrt(1 - t*t) - 1) + b
+	elseif style==8 then
+		--circular ease out
+	 t/=d
+		t-=1
+		return c * sqrt(1 - t*t) + b
+	elseif style==9 then
+		--circular ease in/out
+	 t /= d/2
+ 	if (t < 1) return -c/2 * (sqrt(1 - t*t) - 1) + b
+ 	t-=2
+ 	return c/2 * (sqrt(1 - t*t) + 1) + b
+
+	--======== specials ========
+	elseif style==10 then
+		--bounce out
+		t/=d
+ 	if t < (1/2.75) then
+ 		return c*(7.5625*t*t) + b
+ 	elseif (t < (2/2.75)) then
+ 		t-=(1.5/2.75)
+ 		return c*(7.5625*t*t + 0.75) + b
+ 	elseif (t < (2.5/2.75)) then
+ 	 t-=(2.25/2.75)
+ 		return c*(7.5625*t*t + 0.9375) + b
+ 	else 
+ 		t-=(2.625/2.75)
+ 		return c*(7.5625*t*t + 0.984375) + b
+ 	end
+	elseif style==11 then
+		--elastic out
+		t/=d
+		local ts = t * t
+  local tc = ts*t
+  return b+c*(33*tc*ts + -106*ts*ts + 126*tc + -67*ts + 15*t)
+ elseif style==12 then
+		--elastic in/out
+		t/=d
+		local ts = t * t
+  local tc = ts*t
+  if t<0.3 then
+  	return b+c*(56*tc*ts + -105*ts*ts + 60*tc + -10*ts + 0*t)
+  elseif t>0.7 then
+	  return b+c*(56*tc*ts + -175*ts*ts + 200*tc + -100*ts + 20*t)
+	 else
+			lt=(t-0.3)/0.4	
+			lc=0.98884*c		
+			lb=b+lc*(0.00558)
+	 	return lc * lt + lb
+	 end
+ --======== default =========	
+	else
+		--linear easing 
+	 return c * t / d + b
+	end
+end
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
