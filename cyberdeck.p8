@@ -16,7 +16,7 @@ player={}
 function _init()
   player.points=0
   cartdata("p8-head_cyberdeck_1")
-  --load_scores()
+  load_scores()
 
   ctx=ctx_scorecard
 
@@ -102,7 +102,7 @@ function timer()
  --loss condition complete then
  --remove this code (this only occurs once)
  if over == 1 then
-  --topten(scores)
+  topten(scores)
   svg=svg_gameover
   ctx=ctx_gameover
   stopsvg=false
@@ -721,7 +721,7 @@ end
 
 scores={}
 function load_scores()
- scores={354,1,865,234,12,098,223,456,876,1000,500}
+ scores={354,1,865,234,23,76,34,98,25,67,12,098,223,456,876,1000,500}
 end
 
 gaps={}
@@ -745,10 +745,11 @@ function topten(unsorted)
  --sort from low to high
  --store in scores
  shellsort(unsorted)
- 
+ local cnt=0
  for i=#unsorted,1,-1 do
   --sort top ten, highest first
-  if(i<11) add(highscores,unsorted[i])
+  if(cnt<10) add(highscores,unsorted[i])
+  cnt+=1
  end
 end
 -->8
